@@ -1,4 +1,4 @@
-package com.nesmaya.sportsai
+           package com.nesmaya.sportsai
 
 import android.Manifest
 import android.content.ContentValues
@@ -726,4 +726,559 @@ private fun PlayersScreen(
 
             Button(
                 onClick = {
-                 
+                    displayMode = "قائمة"
+                },
+                modifier = Modifier.weight(1f)
+            ) {
+                Text("قائمة")
+            }
+
+            Button(
+                onClick = {
+                    displayMode = "بطاقات"
+                },
+                modifier = Modifier.weight(1f)
+            ) {
+                Text("بطاقات")
+            }
+
+            Button(
+                onClick = {
+                    displayMode = "جدول"
+                },
+                modifier = Modifier.weight(1f)
+            ) {
+                Text("جدول")
+            }
+        }
+
+        Spacer(
+            modifier = Modifier.height(8.dp)
+        )
+
+        /*
+         * عرض اللاعبين حسب الاختيار.
+         */
+        when (displayMode) {
+
+            "قائمة" -> {
+
+                PlayerListView(
+                    players = players,
+                    onDelete = { player ->
+
+                        players.remove(player)
+
+                        savePlayers(
+                            context,
+                            players
+                        )
+                    }
+                )
+            }
+
+            "بطاقات" -> {
+
+                PlayerCardsView(
+                    players = players,
+                    onDelete = { player ->
+
+                        players.remove(player)
+
+                        savePlayers(
+                            context,
+                            players
+                        )
+                    }
+                )
+            }
+
+            "جدول" -> {
+
+                PlayerTableView(
+                    players = players,
+                    onDelete = { player ->
+
+                        players.remove(player)
+
+                        savePlayers(
+                            context,
+                            players
+                        )
+                    }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun PlayerListView(
+    players: List<Player>,
+    onDelete: (Player) -> Unit
+) {
+
+    LazyColumn(
+        verticalArrangement =
+            Arrangement.spacedBy(8.dp)
+    ) {
+
+        items(
+            players,
+            key = { it.id }
+        ) { player ->
+
+            Card(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp),
+                    verticalAlignment =
+                        Alignment.CenterVertically
+                ) {
+
+                    PlayerAvatar(
+                        player = player
+                    )
+
+                    Spacer(
+                        modifier = Modifier.width(10.dp)
+                    )
+
+                    Column(
+                        modifier = Modifier.weight(1f)
+                    ) {
+
+                        Text(
+                            text = player.name,
+                            style =
+                                MaterialTheme.typography.titleMedium
+                        )
+
+                        Text(
+                            text =
+                                if (
+                                    player.shirtNumber
+                                        .isNotEmpty()
+                                ) {
+                                    "رقم القميص: " +
+                                            player.shirtNumber
+                                } else {
+                                    "بدون رقم"
+                                }
+                        )
+                    }
+
+                    OutlinedButton(
+                        onClick = {
+                            onDelete(player)
+                        }
+                    ) {
+                        Text("حذف")
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun PlayerCardsView(
+    players: List<Player>,
+    onDelete: (Player) -> Unit
+) {
+
+    LazyColumn(
+        verticalArrangement =
+            Arrangement.spacedBy(10.dp)
+    ) {
+
+        items(
+            players,
+            key = { it.id }
+        ) { player ->
+
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(18.dp)
+            ) {
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    horizontalAlignment =
+                        Alignment.CenterHorizontally
+                ) {
+
+                    PlayerAvatar(
+                        player = player,
+                        large = true
+                    )
+
+                    Spacer(
+                        modifier = Modifier.height(8.dp)
+                    )
+
+                    Text(
+                        text = player.name,
+                        style =
+                            MaterialTheme.typography.titleLarge
+                    )
+
+                    Text(
+                        text =
+                            if (
+                                player.shirtNumber
+                                    .isNotEmpty()
+                            ) {
+                                "رقم ${player.shirtNumber}"
+                            } else {
+                                "بدون رقم"
+                            }
+                    )
+
+                    Spacer(
+                        modifier = Modifier.height(8.dp)
+                    )
+
+                    OutlinedButton(
+                        onClick = {
+                            onDelete(player)
+                        }
+                    ) {
+                        Text("حذف اللاعب")
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun PlayerTableView(
+    players: List<Player>,
+    onDelete: (Player) -> Unit
+) {
+
+    LazyColumn(
+        verticalArrangement =
+            Arrangement.spacedBy(4.dp)
+    ) {
+
+        item {
+
+            Card(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp)
+                ) {
+
+                    Text(
+                        text = "الاسم",
+                        modifier = Modifier.weight(2f)
+                    )
+
+                    Text(
+                        text = "الرقم",
+                        modifier = Modifier.weight(1f)
+                    )
+
+                    Text(
+                        text = "إجراء",
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+            }
+        }
+
+        items(
+            players,
+            key = { it.id }
+        ) { player ->
+
+            Card(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp),
+                    verticalAlignment =
+                        Alignment.CenterVertically
+                ) {
+
+                    Text(
+                        text = player.name,
+                        modifier = Modifier.weight(2f)
+                    )
+
+                    Text(
+                        text =
+                            if (
+                                player.shirtNumber
+                                    .isNotEmpty()
+                            ) {
+                                player.shirtNumber
+                            } else {
+                                "-"
+                            },
+                        modifier = Modifier.weight(1f)
+                    )
+
+                    OutlinedButton(
+                        onClick = {
+                            onDelete(player)
+                        },
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Text("حذف")
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun PlayerAvatar(
+    player: Player,
+    large: Boolean = false
+) {
+
+    val context = LocalContext.current
+
+    val size =
+        if (large) {
+            110.dp
+        } else {
+            60.dp
+        }
+
+    if (player.imageUri == null) {
+
+        Box(
+            modifier = Modifier
+                .size(size)
+                .clip(CircleShape)
+                .background(
+                    MaterialTheme.colorScheme.primary
+                ),
+            contentAlignment =
+                Alignment.Center
+        ) {
+
+            Text(
+                text =
+                    player.name
+                        .firstOrNull()
+                        ?.toString()
+                        ?: "?",
+                style =
+                    if (large) {
+                        MaterialTheme.typography.headlineLarge
+                    } else {
+                        MaterialTheme.typography.titleLarge
+                    }
+            )
+        }
+
+    } else {
+
+        AndroidView(
+            modifier = Modifier
+                .size(size)
+                .clip(CircleShape),
+
+            factory = {
+
+                ImageView(context).apply {
+
+                    scaleType =
+                        ImageView.ScaleType.CENTER_CROP
+
+                    layoutParams =
+                        ViewGroup.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT
+                        )
+                }
+            },
+
+            update = { imageView ->
+
+                try {
+
+                    val uri =
+                        Uri.parse(
+                            player.imageUri
+                        )
+
+                    val stream =
+                        context.contentResolver
+                            .openInputStream(uri)
+
+                    val bitmap =
+                        BitmapFactory
+                            .decodeStream(stream)
+
+                    stream?.close()
+
+                    imageView.setImageBitmap(bitmap)
+
+                } catch (_: Exception) {
+
+                    imageView.setImageDrawable(null)
+                }
+            }
+        )
+    }
+}
+
+private fun loadPlayers(
+    context: Context
+): List<Player> {
+
+    val preferences =
+        context.getSharedPreferences(
+            PLAYER_PREFS,
+            Context.MODE_PRIVATE
+        )
+
+    val json =
+        preferences.getString(
+            PLAYER_DATA,
+            null
+        )
+            ?: return emptyList()
+
+    return try {
+
+        val array =
+            JSONArray(json)
+
+        val result =
+            mutableListOf<Player>()
+
+        for (i in 0 until array.length()) {
+
+            val item =
+                array.getJSONObject(i)
+
+            result.add(
+                Player(
+                    id =
+                        item.getLong("id"),
+                    name =
+                        item.getString("name"),
+                    shirtNumber =
+                        item.optString(
+                            "shirtNumber",
+                            ""
+                        ),
+                    imageUri =
+                        if (
+                            item.isNull("imageUri")
+                        ) {
+                            null
+                        } else {
+                            item.optString(
+                                "imageUri",
+                                null
+                            )
+                        }
+                )
+            )
+        }
+
+        result
+
+    } catch (_: Exception) {
+
+        emptyList()
+    }
+}
+
+private fun savePlayers(
+    context: Context,
+    players: List<Player>
+) {
+
+    val array =
+        JSONArray()
+
+    players.forEach { player ->
+
+        val item =
+            JSONObject().apply {
+
+                put(
+                    "id",
+                    player.id
+                )
+
+                put(
+                    "name",
+                    player.name
+                )
+
+                put(
+                    "shirtNumber",
+                    player.shirtNumber
+                )
+
+                if (player.imageUri == null) {
+
+                    put(
+                        "imageUri",
+                        JSONObject.NULL
+                    )
+
+                } else {
+
+                    put(
+                        "imageUri",
+                        player.imageUri
+                    )
+                }
+            }
+
+        array.put(item)
+    }
+
+    context
+        .getSharedPreferences(
+            PLAYER_PREFS,
+            Context.MODE_PRIVATE
+        )
+        .edit()
+        .putString(
+            PLAYER_DATA,
+            array.toString()
+        )
+        .apply()
+}
+
+private fun formatMatchTime(
+    totalSeconds: Long
+): String {
+
+    val minutes =
+        totalSeconds / 60
+
+    val seconds =
+        totalSeconds % 60
+
+    return "%02d:%02d".format(
+        minutes,
+        seconds
+    )
+}
