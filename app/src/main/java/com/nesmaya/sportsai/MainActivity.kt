@@ -507,4 +507,85 @@ private fun NesmayaSportsCamera() {
                 onClick = {
 
                     stopwatchRunning = false
-                   
+                    elapsedSeconds = 0L
+
+                },
+                modifier = Modifier.weight(1f)
+            ) {
+
+                Text("تصفير")
+            }
+        }
+
+        /*
+         * اختيار طريقة عرض البيانات.
+         *
+         * هذه مجرد بداية للنظام.
+         * لاحقًا يمكننا إضافة طرق أخرى
+         * بدون تغيير بيانات اللاعبين نفسها.
+         */
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    start = 16.dp,
+                    end = 16.dp,
+                    bottom = 16.dp
+                ),
+            horizontalArrangement =
+                Arrangement.spacedBy(8.dp)
+        ) {
+
+            Button(
+                onClick = {
+                    displayMode = "قائمة"
+                },
+                modifier = Modifier.weight(1f)
+            ) {
+                Text("قائمة")
+            }
+
+            Button(
+                onClick = {
+                    displayMode = "بطاقات"
+                },
+                modifier = Modifier.weight(1f)
+            ) {
+                Text("بطاقات")
+            }
+
+            Button(
+                onClick = {
+                    displayMode = "جدول"
+                },
+                modifier = Modifier.weight(1f)
+            ) {
+                Text("جدول")
+            }
+        }
+    }
+}
+
+/*
+ * تحويل الثواني إلى:
+ *
+ * 00:00
+ * 00:01
+ * 00:02
+ * ...
+ */
+private fun formatMatchTime(
+    totalSeconds: Long
+): String {
+
+    val minutes =
+        totalSeconds / 60
+
+    val seconds =
+        totalSeconds % 60
+
+    return "%02d:%02d".format(
+        minutes,
+        seconds
+    )
+}
