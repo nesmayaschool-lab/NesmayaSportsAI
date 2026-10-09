@@ -24,6 +24,12 @@ kotlinOptions {
     jvmTarget = "17"
 }
 
+    buildTypes {
+        release {
+            signingConfig = signingConfigs.getByName("debug")
+        }
+    }
+
     buildFeatures {
         compose = true
     }
