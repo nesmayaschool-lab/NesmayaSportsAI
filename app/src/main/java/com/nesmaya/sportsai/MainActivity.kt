@@ -353,7 +353,27 @@ var showPlayerList by remember {
             style = MaterialTheme.typography.headlineMedium,
             modifier = Modifier.padding(12.dp)
         )
-
+Button(
+    onClick = {
+        showPlayerList = !showPlayerList
+    }
+) {
+    Text("اختيار لاعب")
+}
+if (showPlayerList) {
+    Column {
+        players.forEach { player ->
+            Button(
+                onClick = {
+                    selectedPlayer = player
+                    showPlayerList = false
+                }
+            ) {
+                Text("${player.name} - رقم ${player.shirtNumber}")
+            }
+        }
+    }
+}
         Box(
             modifier = Modifier
                 .fillMaxWidth()
