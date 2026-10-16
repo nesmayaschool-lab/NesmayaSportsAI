@@ -243,6 +243,13 @@ private fun MatchScreen(
 
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
+           var selectedPlayer by remember {
+    mutableStateOf<Player?>(null)
+}
+
+var showPlayerList by remember {
+    mutableStateOf(false)
+}
 
     var videoCapture by remember {
         mutableStateOf<VideoCapture<Recorder>?>(null)
