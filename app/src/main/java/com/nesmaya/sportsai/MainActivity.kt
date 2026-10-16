@@ -357,6 +357,7 @@ private fun MatchScreen() {
                 factory = { ctx ->
 
                     PreviewView(ctx).also { view ->
+                               view.implementationMode = PreviewView.ImplementationMode.COMPATIBLE
 
                         previewView = view
 
