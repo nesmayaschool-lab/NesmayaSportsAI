@@ -224,7 +224,7 @@ private fun NesmayaSportsApp() {
 
             if (currentPage == "المباراة") {
 
-                MatchScreen()
+                MatchScreen(players = players)
 
             } else {
 
@@ -237,7 +237,9 @@ private fun NesmayaSportsApp() {
 }
 
 @Composable
-private fun MatchScreen() {
+private fun MatchScreen(
+    players: List<Player>
+) {
 
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
