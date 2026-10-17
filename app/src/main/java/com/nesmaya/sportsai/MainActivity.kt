@@ -1215,16 +1215,11 @@ private fun loadPlayers(
                             ""
                         ),
                     imageUri =
-                        if (
-                            item.isNull("imageUri")
-                        ) {
-                            null
-                        } else {
-                            item.optString(
-                                "imageUri",
-                                null
-                            )
-                        }
+    if (item.isNull("imageUri")) {
+        null
+    } else {
+        item.optString("imageUri", "")
+    }
                 )
             )
         }
